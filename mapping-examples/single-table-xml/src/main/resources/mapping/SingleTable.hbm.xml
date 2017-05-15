@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" 
+	"http://www.hibernate.org/dtd/hibernate-mapping.dtd">
+
+<hibernate-mapping>
+	<class name="andresdlrg.model.SingleTable" table="SINGLE_TABLE">
+		<id name="singleTableId" type="string" column="SINGLE_TABLE_ID">
+			<generator class="uuid"></generator>
+		</id>
+		<property name="number" column="NUMBER" type="int" />
+		<property name="anotherNumber" column="ANOTHER_NUMBER" type="long" />
+		<property name="someString" column="SOME_STRING" type="string" />
+	</class>
+</hibernate-mapping>
