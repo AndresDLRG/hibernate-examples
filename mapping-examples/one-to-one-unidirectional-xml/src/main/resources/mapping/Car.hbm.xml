@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" 
+	"http://www.hibernate.org/dtd/hibernate-mapping.dtd">
+
+<hibernate-mapping>
+	<class name="andresdlrg.model.Car" table="CAR">
+		<id name="carId" type="string" column="CAR_ID">
+			<generator class="uuid"></generator>
+		</id>
+		<one-to-one name="owner" class="andresdlrg.model.CarOwner" />
+		<property name="licensePlate" column="LICENSE_PLATE" type="string" />
+	</class>
+</hibernate-mapping>
