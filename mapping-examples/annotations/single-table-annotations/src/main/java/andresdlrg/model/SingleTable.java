@@ -15,14 +15,15 @@ public class SingleTable {
 	@Id
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@Column(name = "SINGLE_TABLE_ID")
 	private String singleTableId;
-	
+
 	@Column(name = "NUMBER")
 	private int number;
-	
+
 	@Column(name = "ANOTHER_NUMBER")
 	private long anotherNumber;
-	
+
 	@Column(name = "SOME_STRING")
 	private String someString;
 

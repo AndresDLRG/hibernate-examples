@@ -1,4 +1,5 @@
-package andresdlrg.hibernate;
+package andreslrg.hibernate;
+
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -10,11 +11,12 @@ import org.hibernate.SessionFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import andresdlrg.model.SingleTable;
+import andresdlrg.model.Car;
+import andresdlrg.model.CarOwner;
 import andresdlrg.util.HibernateUtil;
 
 @SuppressWarnings("unchecked")
-public class SingleTableTest {
+public class OneToOneUnidirectionalTest {
 
 	private static SessionFactory sessionFactory;
 	
@@ -29,34 +31,43 @@ public class SingleTableTest {
 		// saving object part
 		session.beginTransaction();
 		
-		SingleTable singleTable = new SingleTable();
-		singleTable.setAnotherNumber(2);
-		singleTable.setNumber(1);
-		singleTable.setSomeString("something");
+		CarOwner owner = new CarOwner();
+		owner.setName("Jose Martinez");
+		session.save(owner);
 		
-		session.save(singleTable);
+		Car car = new Car();
+		car.setLicensePlate("abc-1234");
+		car.setOwner(owner);
+		session.save(car);
+		
 		session.getTransaction().commit();
 		
 		// retrieving object saved
 		session.beginTransaction();
 		
-		singleTable = session.get(SingleTable.class, singleTable.getSingleTableId());
+		String id = car.getCarId();
+		car = null;
+		car = session.get(Car.class, id);
 		session.getTransaction().commit();
-		assertNotNull("Could not get object from DB", singleTable);
+		assertNotNull("Could not get object from DB", car);
+		assertNotNull("one to one mapping not got", car.getOwner());
 		
 		// deleting the object
 		session.beginTransaction();
 		
-		session.delete(singleTable);
+		session.delete(car.getOwner());
+		session.delete(car);
 		session.getTransaction().commit();
 		
 		// checking database has no more registers as we deleted the only created
 		session.beginTransaction();
 		
-		List<SingleTable> singleList = (List<SingleTable>)session.createQuery("from SingleTable").list();
+		List<Car> carList = (List<Car>)session.createQuery("from Car").list();
+		List<CarOwner> carOwnerList = (List<CarOwner>)session.createQuery("from CarOwner").list();
 		session.getTransaction().commit();
 		
-		assertEquals("Object was not deleted", 0, singleList.size());
+		assertEquals("Car was not deleted", 0, carList.size());
+		assertEquals("CarOwner was not deleted", 0, carOwnerList.size());
 		
 		session.close();
 	}
